@@ -61,12 +61,12 @@ sizerogaps=size(pixinizero)
 nsizerogaps=sizerogaps(1)
  
   
-FOR jj=0,nsizerogaps-1 DO BEGIN                                                        ; Identifies zero gasps and intervals before and after them that not contain zero gaps
-     f=pixinizero(jj)                                                                  ; Initial zero gasp pixel
-     g=pixfinzero(jj+1)                                                                ; Final zero gasp pixel
+FOR jj=0,nsizerogaps-1 DO BEGIN                                             ; Identifies zero gasps and intervals before and after them that not contain zero gaps
+     f=pixinizero(jj)                                                       ; Initial zero gap pixel
+     g=pixfinzero(jj+1)                                                     ; Final zero gap pixel
      
-     h=diff(jj)                                                                        ; Space to the previous gasp
-     i=diff(jj+1)                                                                      ; Space to the next gasp
+     h=diff(jj)                                                             ; Space to the previous gasp
+     i=diff(jj+1)                                                           ; Space to the next gasp
      
      lowval=f-6
      upval=g+6
