@@ -1,76 +1,27 @@
 function no_zerospro,vect,constant,replace, BAD_VECT = bad_vect
 
-;+
-; NAME:
-;     no_zeros
-; PURPOSE:
-;     Procedure to get an array of float data with some gaps and replaced them with the mean of the pixels
-;     before and after.
-;
-; EXPLANATION:
-;     From a vector of integer or float data, zeros in the pixels are searched. After that, sections of zeros
-;     are identified. From the pixels around this sections, the mean is stablished for each gasp. Then, these
-;     sections are replaced with the mean. After that, a vector of float data with no zeros is obtained.
-;
-; CALLING SEQUENCE
-;       results = no_zeros( vect, constant, replace )
-;
-; INPUTS:
-;       vect - input vector from which we want to remove the zeros. Float or Integer type.
-;       constat - in case the whole vector is filled with zeros, it is changed for another constant.
-;       replace - in case the zeros are expected to be changed for anothe value.
-;       
-;       
-; OUTPUTS:
-;       The new vector without zeros is returned as the function value.
-;       Output is -1 if vector is not integer neither float type. 
-;
-;       If the constant is omitted from the input, in case the vector is whole with zeros,
-;       you may get the same vector.
-;       
-;       In case replace has some value, it would be the value that substitute the zero pixels.
-;       
-
-; KEYWORD OUTPUTS
-;
-;        BAD_VECT set to 1B if is not integer neither float type.
-;
-; EXAMPLES:
-;        testvec=[0,12,35,24.0,0,0,13.6,0,14.6,18.9,0,49.6,-15.8,6]
-;        
-;        nozeros
-;
-;
-; HISTORY:
-
-
 ;-------------------------------------------------------------
-;
-
-
-;compile_opt idl2
-
-program='nozerospro.pro'                       ; Name of programs
+program='nozerospro.pro'                                                        ; Name of programs
 
 var=vect
 IF n_params() LT 2 THEN constant=0 ELSE constant=constant                       ; Read constant parameter for zero vectors
-IF n_params() LT 3 THEN replace=0  ELSE replace=replace                       ; Read replace parameter for zero gasps
+IF n_params() LT 3 THEN replace=0  ELSE replace=replace                         ; Read replace parameter for zero gasps
 
 sivar=size(var)
-nsivar=sivar(1)                       ; Gets size of the vector input
+nsivar=sivar(1)                                                                 ; Gets size of the vector input
 
-Countpixzero=where(var EQ 0)                             ;Gets pixels of zero values (no data or sound)
-sicountpixzero=size(Countpixzero)                       ; Gets numbers of pixels equals to zeros
+Countpixzero=where(var EQ 0)                                                    ; Gets pixels of zero values (no data or sound)
+sicountpixzero=size(Countpixzero)                                               ; Gets numbers of pixels equals to zeros
 nsize=sicountpixzero(1)
 
-iniveczero=FIX(Countpixzero(0))                       ; Creates a new vector with the pixels numbers of the initial zero gasps
+iniveczero=FIX(Countpixzero(0))                                                 ; Creates a new vector with the pixels numbers of the initial zero gaps
 
-IF nsize EQ nsivar THEN GOTO,con_1                       ; Case zero pixels equal a total of vector pixels
-IF sicountpixzero(0) EQ 0 AND iniveczero EQ -1 THEN GOTO,con_2                       ; Case there are no zero pixels, no need of modifications
+IF nsize EQ nsivar THEN GOTO,con_1                                              ; Case zero pixels equal a total of vector pixels
+IF sicountpixzero(0) EQ 0 AND iniveczero EQ -1 THEN GOTO,con_2                  ; Case there are no zero pixels, no need of modifications
 
 pixinizero=[Countpixzero(0)]
-pixfinzero=[0]                                         ; Creates a new vector with the pixel numbers of zero and the final zero gasps
-diff=[pixinizero-pixfinzero]                           ; Creates a new vector with the differences between initial and final pixels numbers of zero gasps
+pixfinzero=[0]                                                                  ; Creates a new vector with the pixel numbers of zero and the final zero gaps
+diff=[pixinizero-pixfinzero]                                                    ; Creates a new vector with the differences between initial and final pixels numbers of zero gaps
 
 IF nsize  EQ 1 THEN BEGIN
   pixfinzero=[pixfinzero,Countpixzero(0)]
@@ -110,12 +61,12 @@ sizerogaps=size(pixinizero)
 nsizerogaps=sizerogaps(1)
  
   
-FOR jj=0,nsizerogaps-1 DO BEGIN                      ; Identifies zero gasps and intervals before and after them that not contain zero gasps
-     f=pixinizero(jj)                            ; Initial zero gasp pixel
-     g=pixfinzero(jj+1)                            ; Final zero gasp pixel
+FOR jj=0,nsizerogaps-1 DO BEGIN                                                        ; Identifies zero gasps and intervals before and after them that not contain zero gaps
+     f=pixinizero(jj)                                                                  ; Initial zero gasp pixel
+     g=pixfinzero(jj+1)                                                                ; Final zero gasp pixel
      
-     h=diff(jj)                                      ; Space to the previous gasp
-     i=diff(jj+1)                                   ; Space to the next gasp
+     h=diff(jj)                                                                        ; Space to the previous gasp
+     i=diff(jj+1)                                                                      ; Space to the next gasp
      
      lowval=f-6
      upval=g+6
