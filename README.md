@@ -1,4 +1,4 @@
-# NO-ZEROS-IDL - E. Tirado-Bueno
+# NO-ZEROS-IDL - E. Tirado-Bueno & D. Godos-Valencia
 
 # Purpose:
 Procedure to get an array of float data with some gaps and replaced them with the mean of the pixels before and after.
